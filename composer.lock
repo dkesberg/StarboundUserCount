@@ -3,11 +3,11 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "6c542b3f42b0fce245e41cd7bd30eb26",
+    "hash": "29b3554f09734a5a2021ef857e0415ae",
     "packages": [
         {
             "name": "imagine/imagine",
-            "version": "v0.5.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
@@ -65,12 +65,12 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
-    "platform": [
-
-    ],
+    "stability-flags": {
+        "imagine/imagine": 20
+    },
+    "platform": {
+        "php": ">5.4.0"
+    },
     "platform-dev": [
 
     ]

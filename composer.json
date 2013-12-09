@@ -1,5 +1,6 @@
 {
-    "name": "ebene3/starbound_server_info",
+    "name": "dkesberg/StarboundUserCount",
+    "description" : "Displays a png of active users on a starbound server.",
     "authors": [
         {
             "name": "Daniel Kesberg",
@@ -7,6 +8,7 @@
         }
     ],
     "require": {
-        "imagine/imagine": "v0.5.0"
+        "php": ">5.4.0",
+        "imagine/imagine": "dev-master"
     }
 }
