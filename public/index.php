@@ -4,9 +4,6 @@
  * @copyright   (c) 2013, ebene3 GmbH
  */
 
-error_reporting(E_ALL);
-ini_set('display_errors', true);
-
 require_once __DIR__ .'/../vendor/autoload.php';
 
 // load config
@@ -24,8 +21,9 @@ if (!is_file($pathData)) {
 // usercount
 if (isset($config['image']['labels']['usercount'])) {
 
-    if ($usercount = file_get_contents($pathData) !== false) {
-        $config['image']['labels']['usercount']['text'] = str_replace('{usercount}', trim($usercount), $config['image']['labels']['usercount']['text']);
+    $usercount = file_get_contents($pathData);
+    if ($usercount !== false) {
+        $config['image']['labels']['usercount']['text'] = str_replace('{usercount}', trim($usercount), $config['image']['labels']['usercount']['text']);        
     } else {
         die('Could not read data file.');
     }
@@ -41,6 +39,7 @@ if (isset($config['image']['labels']['timestamp'])) {
 $imagine        = new \Imagine\Gd\Imagine();
 $image          = $imagine->open($pathBackground);
 
+// add labels
 foreach ($config['image']['labels'] as $label) {
     $font = new \Imagine\Gd\Font($pathFont, $label['size'], new \Imagine\Image\Color($label['color']));
     $image->draw()->text(
