@@ -38,9 +38,5 @@ Create a cronjob to check network connections and update usercount.txt.
 Change filepath to match your system.
 
 ```
-*/5 * * * * lsof -i TCP:21025|grep ESTABLISHED|wc -l > /var/www/starbound/app/storage/statistics/usercount.txt
+*/5 * * * * lsof -i TCP:21025|grep ESTABLISHED|wc -l > /var/www/starbound/app/storage/data/usercount.txt
 ```
-
-Copyright Notice
-----------------
-Please visit http://playstarbound.com/ :)
