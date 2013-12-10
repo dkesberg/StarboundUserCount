@@ -4,41 +4,52 @@
  * @copyright   (c) 2013, ebene3 GmbH
  */
 
-require_once '../vendor/autoload.php';
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 
-// paths
-$pathUsercount  = realpath('../app/storage/statistics/usercount.txt');
-$pathBackground = realpath('../app/storage/backgrounds/default.png');
-$pathFont       = realpath('../app/storage/font/hobo.ttf');
+require_once __DIR__ .'/../vendor/autoload.php';
 
-// read usercount
-$userCount      = trim(file_get_contents($pathUsercount));
-$lastUpdated    = 'Last Update: ' . date('H:i:s d.m.Y', filemtime($pathUsercount));
+// load config
+$config = require_once __DIR__ . '/../app/config/app.php';
 
-// make png
-$imagine = new \Imagine\Gd\Imagine();
-$image = $imagine->open($pathBackground);
+$pathData       = __DIR__ . '/../' . $config['paths']['data'] . '/' . $config['data']['usercount'];
+$pathBackground = __DIR__ . '/../' . $config['paths']['backgrounds'] . '/' . $config['image']['background'];
+$pathFont       = __DIR__ . '/../' . $config['paths']['fonts'] . '/' . $config['image']['font'];
 
-$fontFile = $pathFont;
-$fontColor =  new \Imagine\Image\Color('#fff');
+// check for data file
+if (!is_file($pathData)) {
+    die($pathData.'Data file not found.');
+}
 
-$fontSizeCount  =  80;
-$fontSizeTs     =  16;
+// usercount
+if (isset($config['image']['labels']['usercount'])) {
 
-$fontCount      = new \Imagine\Gd\Font($fontFile, $fontSizeCount, $fontColor);
-$fontTimestamp  = new \Imagine\Gd\Font($fontFile, $fontSizeTs, $fontColor);
+    if ($usercount = file_get_contents($pathData) !== false) {
+        $config['image']['labels']['usercount']['text'] = str_replace('{usercount}', trim($usercount), $config['image']['labels']['usercount']['text']);
+    } else {
+        die('Could not read data file.');
+    }
+}
 
-$image->draw()->text(
-    $userCount,
-    $fontCount,
-    new \Imagine\Image\Point(474, 271)
-);
+// timestamp
+if (isset($config['image']['labels']['timestamp'])) {
+    $timestamp = date($config['image']['labels']['timestamp']['format'], filemtime($pathData));
+    $config['image']['labels']['timestamp']['text'] = str_replace('{timestamp}',$timestamp, $config['image']['labels']['timestamp']['text']);
+}
 
-$image->draw()->text(
-    $lastUpdated,
-    $fontTimestamp,
-    new \Imagine\Image\Point(326, 382)
-);
+// build image
+$imagine        = new \Imagine\Gd\Imagine();
+$image          = $imagine->open($pathBackground);
 
-$image->show('png');
+foreach ($config['image']['labels'] as $label) {
+    $font = new \Imagine\Gd\Font($pathFont, $label['size'], new \Imagine\Image\Color($label['color']));
+    $image->draw()->text(
+        $label['text'],
+        $font,
+        new \Imagine\Image\Point($label['x'], $label['y'])
+    );
+}
+
+// display
+$image->show($config['image']['format']);
 
