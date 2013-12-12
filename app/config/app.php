@@ -6,9 +6,11 @@
 
 return array(
     'paths' => array(
-        'fonts'         => 'app/storage/font',
-        'backgrounds'   => 'app/storage/backgrounds',
-        'data'          => 'app/storage/data'
+        'fonts'             => 'storage/font',
+        'backgrounds'       => 'storage/backgrounds',
+        'data'              => 'storage/data',
+        'application_log'   => 'storage/log/application.log',
+        'server_log'        => '/home/starbound-server/Steam/SteamApps/common/Starbound/linux64/starbound_server.log'
     ),
     'data' => array(
         'usercount' => 'usercount.txt'    

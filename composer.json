@@ -9,6 +9,8 @@
     ],
     "require": {
         "php": ">5.4.0",
+        "slim/slim": "2.*",
+        "slim/extras": 
         "imagine/imagine": "dev-master"
     }
 }
